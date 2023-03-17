@@ -1,0 +1,52 @@
+{
+    "name": "altschool-third-semester-task",
+    "version": "1.0.0",
+    "description": "a restaurant chatbot that will assist customers in placing orders for their preferred meals",
+    "main": "main.js",
+    "scripts": {
+        "test": "jest",
+        "stop-linux": "killall node"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/yakubu234/altschool-third-semester-task.git"
+    },
+    "keywords": [
+        "a",
+        "restaurant",
+        "chatbot",
+        "that",
+        "will",
+        "assist",
+        "customers",
+        "in",
+        "placing",
+        "orders",
+        "for",
+        "their",
+        "preferred",
+        "meals"
+    ],
+    "author": "Abiola Yakubu",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/yakubu234/altschool-third-semester-task/issues"
+    },
+    "homepage": "https://github.com/yakubu234/altschool-third-semester-task#readme",
+    "devDependencies": {
+        "eslint": "^8.26.0",
+        "jest": "^29.3.1",
+        "nodemon": "^2.0.20",
+        "supertest": "^6.3.1"
+    },
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.1",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-validator": "^6.14.2",
+        "mongoose": "^6.7.1",
+        "morgan": "^1.10.0"
+    }
+}
