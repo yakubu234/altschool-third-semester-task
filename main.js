@@ -1,29 +1,34 @@
 const express = require('express');
+const http = require('http')
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 
+/** get the base path, then add it as a global variable. */
 global.__basedir = require('path').resolve('./');
-//parse the dot env
-const env = require('dotenv').config({ path: __basedir + '/env/.env' })
 
+/** parse the dot env and get the port */
+require('dotenv').config({ path: __basedir + '/env/.env' })
 const { PORT } = process.env;
 
-const route = require('./routes/router');
-const bodyParser = require('body-parser');
-const errorHandler = require('./app/middleware/ErrorHandler')
-const mongoose = require('./config/database.config');
-
+const errorHandler = require(__basedir + '/app/middleware/ErrorHandler')
+require(__basedir + '/config/database.config');
+const ws = require(__basedir + '/utils/ws.connection')
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true })) /**parse requests of content-type - application/x-www-form-urlencoded*/
-app.use(bodyParser.json()) /**parse requests of content-type - application/json*/
+/**parse requests of content-type - application/x-www-form-urlencoded*/
+app.use(bodyParser.urlencoded({ extended: true }))
 
-// define a simple route
+/**parse requests of content-type - application/json*/
+app.use(bodyParser.json())
+
+/** serving public file , the cookie parser and show the bot page */
+app.use(express.static('views'));
+app.use(cookieParser());
+
 app.get('/', (req, res) => {
-    res.status(200).json({ "message": "This is the landing page of blog API" });
+    res.render('index');
 });
-
-// public route
-app.use('/api/v1', route);
 
 /** Standard error handling */
 app.use(errorHandler)
@@ -37,7 +42,14 @@ app.get('*', (req, res) => {
     });
 });
 
+
+/* Connect express app and the websocket server  */
+const server = http.createServer(app)
+
+/** the websocket begins here */
+ws(server);
+
 /**listen for requests */
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
