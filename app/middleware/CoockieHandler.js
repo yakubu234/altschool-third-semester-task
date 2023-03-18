@@ -1,6 +1,7 @@
 const sessions = require('express-session');
 const express = require('express');
 const app = express();
+const { SESSION_SECRET } = process.env;
 
 module.exports = (req) => {
     session = req.session;
@@ -10,12 +11,12 @@ module.exports = (req) => {
     }
 
     if (!session) {
-        req.headers['x-user-id'] = "idis here";
+        // req.headers['x-user-id'] = "idis here";
 
         //sessions is here 
         var sess = {
             saveUninitialized: true,
-            secret: 'keyboard cat',
+            secret: SESSION_SECRET,
             cookie: { clientID: "idis here" },
             resave: false
         }
