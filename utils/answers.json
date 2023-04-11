@@ -1,0 +1,15 @@
+[{
+        "question": "hi",
+        "answer": "hello"
+    },
+    {
+        "question": "-help",
+        "answer": {
+            "option1": "below are the list of options"
+        }
+    },
+    {
+        "question": "bye",
+        "answer": "bye (:"
+    }
+]

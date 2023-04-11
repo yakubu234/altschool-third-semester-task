@@ -33,6 +33,13 @@ module.exports = (error, req, res, next) => {
                 "data": {}
             })
             break;
+        case 'cors':
+            res.status(401).json({
+                "status": "error",
+                "message": 'sorry your domain/request origin is not whitelisted',
+                "data": {}
+            })
+            break;
 
         default:
             res.status(400).send(error)
