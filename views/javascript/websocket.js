@@ -9,5 +9,12 @@ ws.onmessage = (message) => displayMessage(message.data)
 // ws.send(val)
 
 const displayMessage = (message) => {
-    console.log(message)
+    if (strContains(message, 'disconnected')) {
+        alert('disconnected')
+    } else {
+        botMessage(message)
+    }
 }
+
+const strContains = (mainStr, subStr) => !!~mainStr.indexOf(subStr);
+

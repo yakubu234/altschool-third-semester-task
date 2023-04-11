@@ -1,6 +1,8 @@
 const express = require('express');
-const http = require('http')
+var cors = require('cors')
+const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const http = require('http')
 const bodyParser = require('body-parser');
 
 /** get the base path, then add it as a global variable. */
@@ -8,10 +10,11 @@ global.__basedir = require('path').resolve('./');
 
 /** parse the dot env and get the port */
 require('dotenv').config({ path: __basedir + '/env/.env' })
-const { PORT } = process.env;
+const { PORT, ALLOWED_ORIGIN, SESSION_SECRET, DOMAIN } = process.env;
 
 const errorHandler = require(__basedir + '/app/middleware/ErrorHandler')
 require(__basedir + '/config/database.config');
+
 const ws = require(__basedir + '/utils/ws.connection')
 
 const app = express();
@@ -24,9 +27,40 @@ app.use(bodyParser.json())
 
 /** serving public file , the cookie parser and show the bot page */
 app.use(express.static('views'));
+
+
+// const whitelist = ALLOWED_ORIGIN
+var corsOptions = {
+    origin: "http://localhost:3000", credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options(cors(corsOptions));
+
+//sessions is here 
 app.use(cookieParser());
 
+var sess = session({
+    saveUninitialized: true,
+    secret: SESSION_SECRET,
+    cookie: {
+        maxAge: null,
+        name: `FoodOrderBot`,
+        domain: DOMAIN,
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax', // must be 'none' to enable cross-site delivery
+    },
+    resave: false,
+})
+
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(sess)
+
 app.get('/', (req, res) => {
+    // req.session.clientID = "this034re89uq83";
     res.render('index');
 });
 
@@ -40,6 +74,7 @@ app.get('*', (req, res) => {
         "message": "Not Found",
         "data": null
     });
+    res.end()
 });
 
 
@@ -47,7 +82,7 @@ app.get('*', (req, res) => {
 const server = http.createServer(app)
 
 /** the websocket begins here */
-ws(server);
+ws(server, sess);
 
 /**listen for requests */
 server.listen(PORT, () => {
