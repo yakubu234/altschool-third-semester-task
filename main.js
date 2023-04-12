@@ -1,6 +1,9 @@
+'use strict';
+
 const express = require('express');
 var cors = require('cors')
 const session = require('express-session');
+const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const http = require('http')
 const bodyParser = require('body-parser');
@@ -28,22 +31,25 @@ app.use(bodyParser.json())
 /** serving public file , the cookie parser and show the bot page */
 app.use(express.static('views'));
 
-
-// const whitelist = ALLOWED_ORIGIN
+var whitelist = ["http://localhost:3000", "http://localhost:2000", 'http://third.mockup.com.ng', 'https://third.mockup.com.ng']
 var corsOptions = {
-    origin: "http://localhost:3000", credentials: true,
+    origin: whitelist,
+    credentials: true,
 };
 
-app.use(cors(corsOptions));
 app.options(cors(corsOptions));
+app.use(cors(corsOptions));
 
 //sessions is here 
-app.use(cookieParser());
+app.use(helmet());
+app.use(cookieParser("293e8ujd0aw9i32jemdoiawj"));
 
 var sess = session({
     saveUninitialized: true,
     secret: SESSION_SECRET,
     cookie: {
+        path: "/",
+        _expires: null,
         maxAge: null,
         name: `FoodOrderBot`,
         domain: DOMAIN,
@@ -60,7 +66,15 @@ if (process.env.NODE_ENV === 'production') {
 app.use(sess)
 
 app.get('/', (req, res) => {
-    // req.session.clientID = "this034re89uq83";
+
+    res.cookie(`User_ID`, `encrypted cookie string Value`, {
+        maxAge: 5000,
+        expires: false,
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+    });
+
     res.render('index');
 });
 
@@ -76,7 +90,6 @@ app.get('*', (req, res) => {
     });
     res.end()
 });
-
 
 /* Connect express app and the websocket server  */
 const server = http.createServer(app)
