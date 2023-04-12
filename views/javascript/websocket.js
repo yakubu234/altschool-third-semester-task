@@ -1,12 +1,19 @@
 'use strict'
-
+var ws;
 const host = location.origin.replace(/^http/, 'ws')
-const ws = new WebSocket(host)
+try {
 
-// WebSocket emit message
-ws.onmessage = (message) => displayMessage(message.data)
+    ws = new WebSocket(host)
 
-// ws.send(val)
+    // WebSocket emit message
+    ws.onmessage = (message) => displayMessage(message.data)
+
+    ws.onerror = (error) => { console.log(error.data) }
+
+} catch (error) {
+    // console.log(error)
+}
+
 
 const displayMessage = (message) => {
     if (strContains(message, 'disconnected')) {

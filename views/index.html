@@ -48,17 +48,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script>
     window.onload = function () {  //calling the init route to store the session
-      // $.ajax({
-      //   type: 'GET',
-      //   url: 'http://localhost:3000/',
-      //   async: false,
-      //   success: function () {
-      //     console.log('session initialized');
-      //   },
-      //   error: function () {
-      //     console.log('error');
-      //   }
-      // })
+      $.ajax({
+        type: 'GET',
+        url: location.origin,
+        async: false,
+        success: function () {
+          console.log('session initialized');
+        },
+        error: function () {
+          console.log('error');
+        }
+      })
     }
 
   </script>
