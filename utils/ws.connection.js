@@ -2,6 +2,7 @@
 const SocketServer = require('ws').Server;
 const sessions = require('express-session');
 const api = require(__basedir + '/utils/answers.json')
+const answers = require(__basedir + '/utils/Answers.js')
 
 module.exports = (server, sess) => {
 
@@ -32,15 +33,14 @@ module.exports = (server, sess) => {
                 // All socket clients are placed in an array
                 wss.clients.forEach((client) => {
 
-                    // Loop through Q/A API
-                    questions.forEach((question, index) => {
-                        if (userMessage.toLowerCase() === question) {
-                            client.send(`hhmmnn: ${api[index].answer}`)
-                        } else {
+                    const response = answers(userMessage.toLowerCase());
 
-                            client.send(randMessage)
-                        }
-                    })
+                    if (!response) {
+                        client.send('sorry the value entered cannot be processed')
+                        client.send(randMessage)
+                    } else {
+                        client.send(response)
+                    }
 
                 })
 
