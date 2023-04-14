@@ -4,7 +4,7 @@ const sessions = require('express-session');
 const api = require(__basedir + '/utils/answers.json')
 const answers = require(__basedir + '/utils/Answers.js')
 
-module.exports = (server, sess) => {
+module.exports = (server, app) => {
 
     let questions = api.map((item) => {
         return item.question
@@ -25,45 +25,44 @@ module.exports = (server, sess) => {
 
     wss.on('connection', (ws, req) => {
 
-        sess(req, {}, () => {
-            let sessionIds = Object.keys(req.sessionStore.sessions);
-            let sessionId = sessionIds[0];
+        app(req, {}, () => {
 
-            let sessionData = req.sessionStore.sessions[sessionId]
-            let parsedObject = JSON.parse(sessionData);
 
-            userId = parsedObject.clientID;
+            userId = req.session.clientID;
             console.log(req.sessionStore)
+
+            console.log(userId)
+            console.log(req.session)
+            const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
+
+            webSockets[userId] = ws;
+            // Add listeners to the WebSocket
+            ws.on('message', (message) => {
+
+                let userMessage = message.toString()
+                if (userMessage === 'exit') {
+                    ws.send(`You have disconnected`)
+                    webSockets[userId].delete();
+                } else {
+
+                    let response = answers(userMessage.toLowerCase());
+
+                    if (!response) {
+                        webSockets[userId].send('sorry the value entered cannot be processed')
+                        webSockets[userId].send(randMessage)
+                    } else {
+                        webSockets[userId].send(response)
+                    }
+
+                }
+            })
+
+            // Static welcome message sent from server
+            ws.send(randMessage)
 
         });
 
-        console.log(userId)
-        const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
 
-        webSockets[userId] = ws;
-        // Add listeners to the WebSocket
-        ws.on('message', (message) => {
-
-            let userMessage = message.toString()
-            if (userMessage === 'exit') {
-                ws.send(`You have disconnected`)
-                webSockets[userId].delete();
-            } else {
-
-                let response = answers(userMessage.toLowerCase());
-
-                if (!response) {
-                    webSockets[userId].send('sorry the value entered cannot be processed')
-                    webSockets[userId].send(randMessage)
-                } else {
-                    webSockets[userId].send(response)
-                }
-
-            }
-        })
-
-        // Static welcome message sent from server
-        ws.send(randMessage)
     })
 
     server.on('upgrade', function (request, socket, head) {
