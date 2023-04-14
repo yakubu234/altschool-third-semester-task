@@ -1,18 +1,23 @@
 'use strict'
 var ws;
 const host = location.origin.replace(/^http/, 'ws')
-try {
+setTimeout(function () {
 
-    ws = new WebSocket(host)
+    var load = document.getElementById('load');
+    try {
+        ws = new WebSocket(host)
 
-    // WebSocket emit message
-    ws.onmessage = (message) => displayMessage(message.data)
+        // WebSocket emit message
+        ws.onmessage = (message) => displayMessage(message.data)
+        ws.onerror = (error) => { console.log(error.data) }
 
-    ws.onerror = (error) => { console.log(error.data) }
+    } catch (error) {
+        // console.log(error)
+    }
 
-} catch (error) {
-    // console.log(error)
-}
+    load.parentNode.removeChild(load);
+}, 2200);
+
 
 
 const displayMessage = (message) => {

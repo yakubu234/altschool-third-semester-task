@@ -66,16 +66,12 @@ if (process.env.NODE_ENV === 'production') {
 app.use(sess)
 
 app.get('/', (req, res) => {
-
-    res.cookie(`User_ID`, `encrypted cookie string Value`, {
-        maxAge: 5000,
-        expires: false,
-        secure: true,
-        httpOnly: true,
-        sameSite: 'lax'
-    });
-
     res.render('index');
+});
+
+app.post('/uuid', (req, res) => {
+    req.session.clientID = req.body.uuid
+    res.end()
 });
 
 /** Standard error handling */
