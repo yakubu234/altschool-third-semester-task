@@ -8,6 +8,18 @@
 
 <body>
   <!-- Chatbot -->
+
+  <!-- loader -->
+  <div id="load" class="load">
+    <div class="wid">
+      <div class="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- loader ended -->
   <div class="botIcon showBotSubject bot-wrapper">
     <div class="Layout Layout-open Layout-expand Layout-right">
       <div class="Messenger_messenger">
@@ -46,20 +58,9 @@
   </div>
   <!-- Chatbot -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/device-uuid@1.0.4/lib/device-uuid.min.js"></script>
   <script>
-    window.onload = function () {  //calling the init route to store the session
-      $.ajax({
-        type: 'GET',
-        url: location.origin,
-        async: false,
-        success: function () {
-          console.log('session initialized');
-        },
-        error: function () {
-          console.log('error');
-        }
-      })
-    }
+
 
   </script>
   <script src="./javascript/websocket.js"></script>

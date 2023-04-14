@@ -12,37 +12,50 @@ module.exports = (server, sess) => {
 
     const wss = new SocketServer({ server })
 
-    wss.on('error', console.error)
+    const sockets = {};
 
-    const clients = new Map();
+    function to(user, data) {
+
+        if (sockets[user] && sockets[user].readyState === SocketServer.OPEN)
+            sockets[user].send(data);
+    }
+
+    let userId;
+    webSockets = {}
+
     wss.on('connection', (ws, req) => {
+
+        sess(req, {}, () => {
+            const sessionIds = Object.keys(req.sessionStore.sessions);
+            const sessionId = sessionIds[0];
+
+            const sessionData = req.sessionStore.sessions[sessionId]
+            const parsedObject = JSON.parse(sessionData);
+
+            userId = parsedObject.clientID;
+
+        });
+
         const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
 
-        const id = uuidv4();
-        const color = Math.floor(Math.random() * 360);
-        const metadata = { id, color };
-
-        clients.set(ws, metadata);
+        webSockets[userId] = ws;
         // Add listeners to the WebSocket
         ws.on('message', (message) => {
+
             let userMessage = message.toString()
             if (userMessage === 'exit') {
                 ws.send(`You have disconnected`)
-                ws.close()
+                webSockets[userId].delete();
             } else {
-                // All socket clients are placed in an array
-                wss.clients.forEach((client) => {
 
-                    const response = answers(userMessage.toLowerCase());
+                const response = answers(userMessage.toLowerCase());
 
-                    if (!response) {
-                        client.send('sorry the value entered cannot be processed')
-                        client.send(randMessage)
-                    } else {
-                        client.send(response)
-                    }
-
-                })
+                if (!response) {
+                    webSockets[userId].send('sorry the value entered cannot be processed')
+                    webSockets[userId].send(randMessage)
+                } else {
+                    webSockets[userId].send(response)
+                }
 
             }
         })
@@ -52,11 +65,9 @@ module.exports = (server, sess) => {
     })
 
     server.on('upgrade', function (request, socket, head) {
-        console.log('Parsing session from request...');
-
         sess(request, {}, () => {
             if (!request.session.clientID) {
-                request.session.clientID = uuidv4()
+                request.session.clientID = userId
                 return;
             }
 
@@ -69,7 +80,7 @@ module.exports = (server, sess) => {
     wss.on('error', console.error)
 
     wss.on("close", () => {
-        clients.delete(ws);
+        webSockets[userId].delete();
     });
 
 

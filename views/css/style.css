@@ -8,23 +8,73 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  overflow: hidden;
 }
+
 .botIcon {
   width: 500px !important;
 }
+
+/* // loader  */
+.wid {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background-color: white;
+}
+
+.loader span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(22, 46, 98);
+  margin: 0 10px;
+}
+
+.loader span:nth-child(1) {
+  animation: 1s jump infinite ease-in-out;
+}
+
+.loader span:nth-child(2) {
+  animation: 1s 0.333s jump infinite ease-in-out;
+}
+
+.loader span:nth-child(3) {
+  animation: 1s 0.667s jump infinite ease-in-out;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  30% {
+    transform: translateY(-20px) scale(1.2);
+  }
+
+  75% {
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* //loader ended */
 
 .iconInner {
   -webkit-align-items: center;
   -ms-align-items: center;
   align-items: center;
   background: #a64bf4;
-  background: -webkit-linear-gradient(
-    to left,
-    #00dbde,
-    #fc00ff,
-    #00dbde,
-    #fc00ff
-  );
+  background: -webkit-linear-gradient(to left,
+      #00dbde,
+      #fc00ff,
+      #00dbde,
+      #fc00ff);
   background: -o-linear-gradient(to left, #00dbde, #fc00ff, #00dbde, #fc00ff);
   background: -moz-linear-gradient(to left, #00dbde, #fc00ff, #00dbde, #fc00ff);
   background: linear-gradient(to left, #00dbde, #fc00ff, #00dbde, #fc00ff);
@@ -452,12 +502,12 @@ body {
   flex-direction: row-reverse;
 }
 
-.msg + .msg {
+.msg+.msg {
   margin-top: 15px;
 }
 
 /* user bot bubble styling */
-.user > span.responsText {
+.user>span.responsText {
   display: inline-block;
   margin-left: 20px;
   vertical-align: top;
@@ -476,7 +526,7 @@ body {
   word-wrap: break-word !important;
 }
 
-.user > span.responsText::after {
+.user>span.responsText::after {
   content: "";
   display: block;
   position: absolute;
@@ -503,7 +553,7 @@ body {
 }
 
 /* bot bubble styling */
-.bot-msg > span.responsText {
+.bot-msg>span.responsText {
   color: #fff;
   display: inline-block;
   margin-left: 20px;
@@ -519,7 +569,7 @@ body {
   word-wrap: break-word !important;
 }
 
-.bot-msg > span.responsText::after {
+.bot-msg>span.responsText::after {
   content: "";
   display: block;
   position: absolute;
@@ -530,6 +580,7 @@ body {
   transform: scaleX(0.8) skew(45deg);
   background: #162e62;
 }
+
 .msg.user span.responsText {
   margin-left: 0;
   margin-right: 10px;
@@ -550,7 +601,8 @@ span.avtr figure {
   margin: 0;
   padding-bottom: 100%;
 }
-.robot > figure {
+
+.robot>figure {
   background-color: #fff !important;
 }
 
@@ -560,6 +612,7 @@ span.avtr figure {
     -webkit-transform: scale(0);
     transform: scale(0);
   }
+
   100% {
     opacity: 1;
     -webkit-transform: scale(1);
@@ -573,6 +626,7 @@ span.avtr figure {
     -ms-transform: scale(0);
     transform: scale(0);
   }
+
   100% {
     opacity: 1;
     -ms-transform: scale(1);
@@ -586,6 +640,7 @@ span.avtr figure {
     -webkit-transform: scale(0);
     transform: scale(0);
   }
+
   100% {
     opacity: 1;
     -webkit-transform: scale(1);
@@ -599,6 +654,7 @@ span.avtr figure {
     -webkit-transform: translateX(10px);
     transform: translateX(10px);
   }
+
   100% {
     opacity: 1;
     -webkit-transform: translateX(0);
@@ -612,6 +668,7 @@ span.avtr figure {
     -ms-transform: translateX(10px);
     transform: translateX(10px);
   }
+
   100% {
     opacity: 1;
     -ms-transform: translateX(0);
@@ -625,6 +682,7 @@ span.avtr figure {
     -webkit-transform: translateX(10px);
     transform: translateX(10px);
   }
+
   100% {
     opacity: 1;
     -webkit-transform: translateX(0);
@@ -649,6 +707,7 @@ span.avtr figure {
   body {
     padding: 20px !important;
   }
+
   .botIcon {
     width: 700px !important;
   }
