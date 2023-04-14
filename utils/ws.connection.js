@@ -21,16 +21,16 @@ module.exports = (server, sess) => {
     }
 
     let userId;
-    webSockets = {}
+    var webSockets = {}
 
     wss.on('connection', (ws, req) => {
 
         sess(req, {}, () => {
-            const sessionIds = Object.keys(req.sessionStore.sessions);
-            const sessionId = sessionIds[0];
+            let sessionIds = Object.keys(req.sessionStore.sessions);
+            let sessionId = sessionIds[0];
 
-            const sessionData = req.sessionStore.sessions[sessionId]
-            const parsedObject = JSON.parse(sessionData);
+            let sessionData = req.sessionStore.sessions[sessionId]
+            let parsedObject = JSON.parse(sessionData);
 
             userId = parsedObject.clientID;
             console.log(req.sessionStore)
@@ -50,7 +50,7 @@ module.exports = (server, sess) => {
                 webSockets[userId].delete();
             } else {
 
-                const response = answers(userMessage.toLowerCase());
+                let response = answers(userMessage.toLowerCase());
 
                 if (!response) {
                     webSockets[userId].send('sorry the value entered cannot be processed')
