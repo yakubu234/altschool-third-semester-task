@@ -36,6 +36,7 @@ module.exports = (server, sess) => {
 
         });
 
+        console.log(userId)
         const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
 
         webSockets[userId] = ws;
