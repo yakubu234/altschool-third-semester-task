@@ -33,7 +33,7 @@ module.exports = (server, sess) => {
             const parsedObject = JSON.parse(sessionData);
 
             userId = parsedObject.clientID;
-            console.log(req.sessionStore.sessions)
+            console.log(req.sessionStore)
 
         });
 
