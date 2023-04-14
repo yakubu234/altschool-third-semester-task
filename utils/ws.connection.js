@@ -66,7 +66,7 @@ module.exports = (server, app) => {
     })
 
     server.on('upgrade', function (request, socket, head) {
-        sess(request, {}, () => {
+        app(request, {}, () => {
             if (!request.session.clientID) {
                 request.session.clientID = userId
                 return;
