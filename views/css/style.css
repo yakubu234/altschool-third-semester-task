@@ -567,6 +567,7 @@ body {
   padding: 1rem;
   position: relative;
   word-wrap: break-word !important;
+  margin-top: 10px;
 }
 
 .bot-msg>span.responsText::after {
@@ -692,7 +693,7 @@ span.avtr figure {
 
 @media only screen and (max-width: 412px) {
   .botIcon .Layout-open {
-    width: 250px;
+    width: 100%;
   }
 }
 

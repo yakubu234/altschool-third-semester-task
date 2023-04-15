@@ -91,7 +91,7 @@ app.get('*', (req, res) => {
 const server = http.createServer(app)
 
 /** the websocket begins here */
-ws(server, app);
+ws(server, sess);
 
 /**listen for requests */
 server.listen(PORT, () => {
