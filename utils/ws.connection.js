@@ -1,14 +1,9 @@
 
 const SocketServer = require('ws').Server;
 const sessions = require('express-session');
-const api = require(__basedir + '/utils/answers.json')
 const answers = require(__basedir + '/utils/Answers.js')
 
 module.exports = (server, sess) => {
-
-    let questions = api.map((item) => {
-        return item.question
-    })
 
     const wss = new SocketServer({ server })
 
@@ -26,24 +21,23 @@ module.exports = (server, sess) => {
     wss.on('connection', (ws, req) => {
 
         sess(req, {}, () => {
-            console.log(req);
+            // console.log(req);
         })
         const url = req.url;
         const userId = url.substring(url.indexOf('?') + 1);
-        console.log(userId)
         const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
 
         webSockets[userId] = ws;
         // Add listeners to the WebSocket
         ws.on('message', (message) => {
-            console.log(userId)
+            // console.log(userId)  but you will use it
             let userMessage = message.toString()
             if (userMessage === 'exit') {
                 ws.send(`You have disconnected`)
                 webSockets[userId].delete();
             } else {
 
-                let response = answers(userMessage.toLowerCase());
+                let response = answers(userMessage.toLowerCase(), userId);
 
                 if (!response) {
                     webSockets[userId].send('sorry the value entered cannot be processed')

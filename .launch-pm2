@@ -1,0 +1,1 @@
+ pm2 start main.js --name "food api" --max-memory-restart 1G -i 0 --watch --wait-ready --listen-timeout 5000 

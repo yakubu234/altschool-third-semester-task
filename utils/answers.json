@@ -1,15 +1,55 @@
-[{
-        "question": "hi",
-        "answer": "hello"
+[
+    {
+        "comments": "please chose from below menu"
     },
     {
-        "question": "-help",
-        "answer": {
-            "option1": "below are the list of options"
-        }
+        "menu": "Pap en vleis/Shisa nyama",
+        "number": 20,
+        "price": "2000"
     },
     {
-        "question": "bye",
-        "answer": "bye (:"
+        "menu": "Piri piri chicken",
+        "number": 21,
+        "price": "3500"
+    },
+    {
+        "menu": "Jollof rice and egusi soup",
+        "number": 22,
+        "price": "2500"
+    },
+    {
+        "menu": "Bunny chow",
+        "number": 23,
+        "price": "200"
+    },
+    {
+        "menu": "Muamba de Galinha",
+        "number": 24,
+        "price": "800"
+    },
+    {
+        "menu": "Potjiekos and stew",
+        "number": 25,
+        "price": "500"
+    },
+    {
+        "menu": "Rice and Stew with Roasted Sea Tortule",
+        "number": 26,
+        "price": "11,500"
+    },
+    {
+        "menu": "Banga with Starch",
+        "number": 27,
+        "price": "2000"
+    },
+    {
+        "menu": "Agidi and Edikainkan, Grilled chicken",
+        "number": 28,
+        "price": "7000"
+    },
+    {
+        "menu": "Bread, Chocolate and Intercontinental fried Egg",
+        "number": 29,
+        "price": "6000"
     }
 ]
