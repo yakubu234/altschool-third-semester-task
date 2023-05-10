@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 //Define a schema
-const Schema = mongoose.Schema;
+const Schema = mogoose.Schema;
 const order = new Schema({
     guest_id: {
         type: String,
@@ -18,4 +18,4 @@ const order = new Schema({
 }, { timestamps: true });
 
 
-module.exports = mongoose.model('orders', order);
+module.exports = mogoose.model('orders', order);
