@@ -83,12 +83,12 @@ module.exports = async (ws, socket, userMessage, sessionID = null) => {
                 result = JSON.parse(success);
                 delete result.number;
 
-                // const newObj = {...obj, time: "2023/05/10"}; to add time to the new object
-                const mergedObj = [{ "comments": "The below order has been placed  " }, result]
+                const newObj = { ...result, time: new Date().toLocaleString() }; //to add time to the new object
+                const mergedObj = [{ "comments": "The below order has been placed  " }, newObj]
 
                 order.create({
                     guest_id: sessionID + "_current",
-                    current_order: JSON.stringify(result)
+                    current_order: JSON.stringify(newObj)
                 }).then((success) => {
 
                     if (success) {
@@ -125,7 +125,25 @@ module.exports = async (ws, socket, userMessage, sessionID = null) => {
     }
 
     async function orderHistory() {
-        return sendWs("order history")
+        await order.find({ guest_id: sessionID + "_current" }).then((success) => {
+            let result = [];
+
+            if (success.length > 0) {
+
+                result.push({ "comments": "Below are order(s) you've made so far <br>" })
+
+                success.forEach(element => {
+                    result.push(JSON.parse(element.current_order))
+                });
+
+                return sendWs(JSON.stringify(result));
+            } else {
+                return sendWs("You have no order in the database");
+            }
+        }).catch((err) => {
+            console.log(err)
+            return sendWs("You have no order in the database");
+        });
     }
 }
 
