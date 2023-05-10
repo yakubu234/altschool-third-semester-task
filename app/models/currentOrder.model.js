@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+// const mongoose =  require(__basedir + '/app/models/orders.model');
 
 //Define a schema
-const Schema = mongoose.Schema;
+const Schema = mogoose.Schema;
 const currentOrder = new Schema({
     guest_id: {
         type: String,
@@ -19,4 +19,4 @@ const currentOrder = new Schema({
 }, { timestamps: true });
 
 
-module.exports = mongoose.model('current_order', currentOrder);
+module.exports = mogoose.model('current_order', currentOrder);

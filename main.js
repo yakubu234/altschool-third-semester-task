@@ -16,7 +16,7 @@ require('dotenv').config({ path: __basedir + '/env/.env' })
 const { PORT, ALLOWED_ORIGIN, SESSION_SECRET, DOMAIN } = process.env;
 
 const errorHandler = require(__basedir + '/app/middleware/ErrorHandler')
-require(__basedir + '/config/database.config');
+global.mogoose = require(__basedir + '/config/database.config');
 
 const ws = require(__basedir + '/utils/ws.connection')
 
