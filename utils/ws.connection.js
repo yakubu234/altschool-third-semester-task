@@ -18,33 +18,34 @@ module.exports = (server, sess) => {
     let userId;
     var webSockets = {}
 
-    wss.on('connection', (ws, req) => {
+    wss.on('connection', async (ws, req) => {
 
         sess(req, {}, () => {
             // console.log(req);
         })
         const url = req.url;
         const userId = url.substring(url.indexOf('?') + 1);
+        // console.log(userId)
         const randMessage = "Hi friend!<br><br> \n enter 1 to place an order \n<br> enter 99 to checkout order \n <br>enter 98 to see order history <br>\n enter 97 to see current order <br>\n enter 0 to cancel an order";
 
         webSockets[userId] = ws;
         // Add listeners to the WebSocket
-        ws.on('message', (message) => {
-            // console.log(userId)  but you will use it
+        ws.on('message', async (message) => {
+            // console.log(userId)  but you will
             let userMessage = message.toString()
             if (userMessage === 'exit') {
                 ws.send(`You have disconnected`)
                 webSockets[userId].delete();
             } else {
 
-                let response = answers(userMessage.toLowerCase(), userId);
+                let response = answers(ws, webSockets[userId], userMessage.toLowerCase(), userId);
 
-                if (!response) {
-                    webSockets[userId].send('sorry the value entered cannot be processed')
-                    webSockets[userId].send(randMessage)
-                } else {
-                    webSockets[userId].send(response)
-                }
+                // if (!response) {
+                //     webSockets[userId].send('sorry the value entered cannot be processed')
+                //     webSockets[userId].send(randMessage)
+                // } else {
+                //     webSockets[userId].send(response)
+                // }
 
             }
         })

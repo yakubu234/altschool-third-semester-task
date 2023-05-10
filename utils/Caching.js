@@ -37,9 +37,9 @@ const base64_decode = (data) => {
     });
 })();
 
-function getCache(key) {
+async function getCache(key) {
     try {
-        const cacheData = redis.get(key);
+        const cacheData = await redis.get(key);
         if (cacheData) {
             return cacheData
         }
@@ -59,9 +59,14 @@ function setCache(key, data, ttl = REDIS_TTL) {
 }
 
 // Remove given Redis cache key
-function removeCache(key) {
+async function removeCache(key) {
     try {
-        redis.del(key);
+
+        const cacheData = await redis.get(key);
+        await redis.del(key);
+        if (cacheData) {
+            return cacheData
+        }
     } catch (err) {
         throw new Error(err);
     }
